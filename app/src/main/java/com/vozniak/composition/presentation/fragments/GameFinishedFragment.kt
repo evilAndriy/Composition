@@ -6,11 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.vozniak.composition.databinding.FragmentGameFinishedBinding
+import com.vozniak.composition.domain.entity.GameResult
+import com.vozniak.composition.domain.entity.GameSettings
 
-class GameFinishedFragment  : Fragment() {
+class GameFinishedFragment : Fragment() {
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
         get() = _binding ?: throw RuntimeException("FragmentWelcomeBinding == null")
+
+    private lateinit var gameResult: GameSettings
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parseArgs()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +34,21 @@ class GameFinishedFragment  : Fragment() {
         _binding = null
     }
 
+    private fun parseArgs() {
+        gameResult = requireArguments().getSerializable(
+            GAME_RESULT_KEY,
+            GameSettings::class.java
+        ) as GameSettings
+    }
+
     companion object {
-        fun newInstance() = GameFinishedFragment()
+        private const val GAME_RESULT_KEY = "game_finished"
+        fun newInstance(gameSettings: GameSettings): GameFinishedFragment {
+            return GameFinishedFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(GAME_RESULT_KEY, gameSettings)
+                }
+            }
+        }
     }
 }
