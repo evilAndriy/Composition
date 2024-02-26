@@ -45,7 +45,7 @@ class ChooseLevelFragment  : Fragment() {
         requireActivity().supportFragmentManager.
         beginTransaction().
         replace(R.id.place_holder, fragment).
-        addToBackStack(null).
+        addToBackStack(GameFragment.NAME).
         commit()
     }
     override fun onDestroyView() {
@@ -54,6 +54,7 @@ class ChooseLevelFragment  : Fragment() {
     }
 
     companion object {
+        const val NAME = "ChooseLevelFragment"
         fun newInstance() = ChooseLevelFragment()
     }
 }

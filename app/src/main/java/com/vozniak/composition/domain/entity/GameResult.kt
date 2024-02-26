@@ -1,8 +1,13 @@
 package com.vozniak.composition.domain.entity
 
-class GameResult (
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
+
+@Parcelize
+data class GameResult(
     val winner : Boolean,
     val countOfRightAnswers : Int,
-    val countOfQuestions: Questions,
+    val countOfQuestions: Int,
     val gameSettings: GameSettings
-)
+) : Parcelable
