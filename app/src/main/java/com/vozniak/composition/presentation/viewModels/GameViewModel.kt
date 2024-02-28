@@ -5,13 +5,12 @@ import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.vozniak.composition.R
 import com.vozniak.composition.data.GameRepositoryImpl
 import com.vozniak.composition.domain.entity.GameResult
 import com.vozniak.composition.domain.entity.GameSettings
 import com.vozniak.composition.domain.entity.Level
-import com.vozniak.composition.domain.entity.Questions
+import com.vozniak.composition.domain.entity.Question
 import com.vozniak.composition.domain.usecases.GenerateQuestionsUseCase
 import com.vozniak.composition.domain.usecases.GetGameSettingsUseCase
 
@@ -19,6 +18,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     private lateinit var gameSettings: GameSettings
     private lateinit var level: Level
+
 
     private val context = application
     private val repository = GameRepositoryImpl
@@ -32,8 +32,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     val formattedTime: LiveData<String>
         get() = _formattedTime
 
-    private val _question = MutableLiveData<Questions>()
-    val question: LiveData<Questions>
+    private val _question = MutableLiveData<Question>()
+    val question: LiveData<Question>
         get() = _question
 
     private val _percentOfRightAnswers = MutableLiveData<Int>()
@@ -66,7 +66,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     fun startGame(level: Level) {
         getGameSettings(level)
         startTimer()
-        generateQuestion()
+       generateQuestion()
     }
 
     fun chooseAnswer(number: Int) {
@@ -83,7 +83,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             countOfRightAnswers,
             gameSettings.minCountOfRightAnswers
         )
-        _enoughPercent.value = countOfRightAnswers >= gameSettings.minCountOfRightAnswers
+        _enoughCount.value = countOfRightAnswers >= gameSettings.minCountOfRightAnswers
         _enoughPercent.value = percent >= gameSettings.minPercentOfRightAnswers
     }
 
