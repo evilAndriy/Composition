@@ -13,6 +13,7 @@ import com.vozniak.composition.R
 import com.vozniak.composition.databinding.FragmentGameBinding
 import com.vozniak.composition.domain.entity.Level
 import com.vozniak.composition.presentation.viewModels.GameViewModel
+import com.vozniak.composition.presentation.viewModels.GameViewModelFactory
 
 class GameFragment : Fragment() {
     private lateinit var level: Level
@@ -21,12 +22,14 @@ class GameFragment : Fragment() {
     private val binding: FragmentGameBinding
         get() = _binding ?: throw RuntimeException("FragmentWelcomeBinding == null")
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameViewModel::class.java]
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
     }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory) [GameViewModel::class.java]
+    }
+
     private val tvOptions by lazy {
         mutableListOf<TextView>().apply {
             add(binding.tvOption1)
@@ -52,9 +55,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         observeViewModel()
-        viewModel.startGame(level)
         setClickListenersToOptions()
     }
 
@@ -97,7 +98,7 @@ class GameFragment : Fragment() {
         }
 
         viewModel.minPercent.observe(viewLifecycleOwner) {
-                binding.progressBar.secondaryProgress = it
+            binding.progressBar.secondaryProgress = it
         }
         viewModel.gameResult.observe(viewLifecycleOwner) {
             initFragment(GameFinishedFragment.newInstance(it))
