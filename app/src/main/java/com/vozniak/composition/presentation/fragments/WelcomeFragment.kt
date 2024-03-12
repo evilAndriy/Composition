@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.vozniak.composition.R
 import com.vozniak.composition.databinding.FragmentWelcomeBinding
 
@@ -24,22 +25,14 @@ class WelcomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonUnderstand.setOnClickListener(){
-            initFragment(ChooseLevelFragment.newInstance())
+            initFragment( )
         }
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
-  private fun initFragment(fragment: Fragment) {
-        requireActivity().supportFragmentManager.
-                beginTransaction().
-                replace(R.id.place_holder, fragment).
-                addToBackStack(null).
-                commit()
+  private fun initFragment() {
+        findNavController().navigate(WelcomeFragmentDirections.actionWelcomeFragment2ToChooseLevelFragment())
     }
-
-
 }

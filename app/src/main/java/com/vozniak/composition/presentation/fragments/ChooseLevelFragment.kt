@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.vozniak.composition.R
 import com.vozniak.composition.databinding.FragmentChooseLevelBinding
 import com.vozniak.composition.domain.entity.Level
@@ -29,32 +30,23 @@ class ChooseLevelFragment  : Fragment() {
 
    private fun initButtons(){
        binding.buttonLevelTest.setOnClickListener(){
-           initFragment(GameFragment.newInstance(Level.TEST))
+           initFragment(Level.TEST)
        }
        binding.buttonLevelEasy.setOnClickListener(){
-           initFragment(GameFragment.newInstance(Level.EASY))
+           initFragment(Level.EASY)
        }
        binding.buttonLevelNormal.setOnClickListener(){
-           initFragment(GameFragment.newInstance(Level.NORMAL))
+           initFragment(Level.NORMAL)
        }
        binding.buttonLevelHard.setOnClickListener(){
-           initFragment(GameFragment.newInstance(Level.HARD))
+           initFragment(Level.HARD)
        }
     }
-    private fun initFragment(fragment: Fragment) {
-        requireActivity().supportFragmentManager.
-        beginTransaction().
-        replace(R.id.place_holder, fragment).
-        addToBackStack(GameFragment.NAME).
-        commit()
+    private fun initFragment(level: Level) {
+        findNavController().navigate(ChooseLevelFragmentDirections.actionChooseLevelFragmentToGameFragment(level))
     }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val NAME = "ChooseLevelFragment"
-        fun newInstance() = ChooseLevelFragment()
     }
 }
